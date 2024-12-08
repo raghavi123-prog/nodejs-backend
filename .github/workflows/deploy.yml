@@ -52,4 +52,4 @@ jobs:
         docker rm static-nodejs-app || true
         docker run -d --name static-nodejs-app -p 3000:3000 your-dockerhub-username/static-nodejs-app
         EOF
-zzz
+
