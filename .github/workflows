@@ -1,0 +1,38 @@
+name: Deploy Node.js App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code from the repository
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # Log in to Docker Hub
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # Build the Docker image
+    - name: Build Docker Image
+      run: docker build -t myapp/nodejs-backend:latest .
+
+    # Push the Docker image to Docker Hub
+    - name: Push Docker Image
+      run: docker push myapp/nodejs-backend:latest
+
+    # Deploy the Docker container
+    - name: Deploy to AWS ECS (Optional for static hosting)
+      run: |
+        echo "Deployment steps can be included here if using ECS or Kubernetes"
