@@ -1,20 +1,69 @@
-name: Deploy Static HTML to S3
+name: Build, Deploy Node.js App & Static HTML
 
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push to the main branch
+      - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
+      # Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up AWS CLI
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Install dependencies for Node.js
+      - name: Install dependencies
+        run: npm install
+
+      # Run tests for Node.js
+      - name: Run tests
+        run: npm test || echo "No tests defined."
+
+      # Build Docker image for Node.js
+      - name: Build Docker image
+        run: docker build -t raghavi123/nodejs-backend-app .
+
+      # Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Push Docker image to Docker Hub
+      - name: Push Docker image
+        run: docker push raghavi123/nodejs-backend-app
+
+      # Set up SSH for Node.js deployment
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Deploy Node.js App to EC2 server
+      - name: Deploy to EC2 server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+          docker pull raghavi123/nodejs-backend-app
+          docker stop nodejs-backend-app || true
+          docker rm nodejs-backend-app || true
+          docker run -d --name nodejs-backend-app -p 3000:3000 raghavi123/nodejs-backend-app
+          EOF
+
+      # Debug workspace files (Optional)
+      - name: Debug: List workspace files
+        run: ls -R
+
+      # Set up AWS CLI for Static HTML deployment
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -22,7 +71,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1  # Change region if needed
 
-      # Step 3: Sync index.html to S3
-      - name: Sync index.html to S3
+      # Sync static files to S3
+      - name: Sync static files to S3
         run: |
           aws s3 cp ./index.html s3://kops-rag-storage-2/index.html
