@@ -1,4 +1,4 @@
-name: Build, Deploy Node.js Backend & Static HTML
+name: Build, Deploy Node.js Backend & Static HTMl
 
 on:
   push:
