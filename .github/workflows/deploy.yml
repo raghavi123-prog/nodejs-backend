@@ -36,6 +36,12 @@ jobs:
       - name: Push Docker image
         run: docker push raghavi123/nodejs-backend-app
 
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+
       - name: Deploy to Server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
