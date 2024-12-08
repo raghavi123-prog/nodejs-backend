@@ -3,7 +3,7 @@ name: Deploy Node.js App
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push to the main branch
+      - main  # Trigger on push to the main branch
 
 jobs:
   build-and-deploy:
@@ -14,35 +14,43 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Docker
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Optional: Run tests (can be skipped)
+      - name: Run tests
+        run: npm test || echo "Tests failed but continuing deployment."
 
       # Log in to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: raghavi123
-          password: Raghavi123$
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Build Docker image
-      - name: Build Docker image
-        run: docker build -t your-dockerhub-username/static-nodejs-app .
-
-      # Push Docker image to Docker Hub
-      - name: Push Docker image to Docker Hub
-        run: docker push your-dockerhub-username/static-nodejs-app
-
-      # SSH into the server and deploy the app
-      - name: Deploy to EC2
+      # Build and Push Docker image
+      - name: Build and Push Docker image
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-          docker pull your-dockerhub-username/static-nodejs-app
+          echo "Building and pushing Docker image..."
+          docker build -t raghavi123/static-nodejs-app .
+          docker push raghavi123/static-nodejs-app
+
+      # Deploy to EC2 server
+      - name: Deploy application to EC2
+        run: |
+          echo "Deploying application to EC2 server..."
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+          docker pull raghavi123/static-nodejs-app
           docker stop static-nodejs-app || true
           docker rm static-nodejs-app || true
-          docker run -d --name static-nodejs-app -p 3000:3000 your-dockerhub-username/static-nodejs-app
+          docker run -d --name static-nodejs-app -p 3000:3000 raghavi123/static-nodejs-app
           EOF
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
-
