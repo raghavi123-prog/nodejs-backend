@@ -45,7 +45,7 @@ jobs:
       - name: Deploy to Server
         run: |
          ssh -vvv -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-         docker pull your-dockerhub-username/nodejs-backend-app
+         docker pull raghavi123/nodejs-backend-app
          docker stop nodejs-backend-app || true
          docker rm nodejs-backend-app || true
          docker run -d --name nodejs-backend-app -p 3000:3000 your-dockerhub-username/nodejs-backend-app
