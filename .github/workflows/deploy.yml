@@ -22,10 +22,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1  # Change region if needed
 
-      # Step 3: Sync index.html to S3 bucket
+      # Step 3: Sync index.html to S3
       - name: Sync index.html to S3
         run: |
-          aws s3 cp ./index.html s3://kops-rag-storage-2/index.html --delete
-
-   
-      
+          aws s3 cp ./index.html s3://kops-rag-storage-2/index.html
