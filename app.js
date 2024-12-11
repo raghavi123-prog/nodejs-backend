@@ -1,21 +1,35 @@
 const express = require('express');
-const os = require('os'); // Import the 'os' module to get system-level details
+const logger = require('./logger'); // Adjust the path if the logger file is elsewhere
 
 const app = express();
-const startTime = Date.now();
 
-app.get('/status', (req, res) => {
-    const serverUptime = Math.floor((Date.now() - startTime) / 1000); // App uptime
-    const systemUptime = Math.floor(os.uptime()); // System uptime
-    res.json({
-        status: 'OK',
-        appUptime: `${serverUptime} seconds`,
-        systemUptime: `${systemUptime} seconds`,
-        message: 'Node.js backend is up and running'
-    });
+// Middleware for request logging
+app.use((req, res, next) => {
+    logger.info(`Request: ${req.method} ${req.url}`);
+    next();
 });
 
-const PORT = 3000;
+// Example route for the home page
+app.get('/', (req, res) => {
+    logger.info('Root route accessed');
+    res.send('Welcome to the Node.js Backend!');
+});
+
+// Example route to simulate an error
+app.get('/error', (req, res) => {
+    const error = new Error('Simulated error for testing');
+    logger.error('Simulated error encountered', { error: error.message });
+    res.status(500).send('Error occurred');
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    logger.error(`Unhandled error: ${err.message}`, { stack: err.stack });
+    res.status(500).send('Something went wrong!');
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    logger.info(`Backend server is running on http://localhost:${PORT}`);
 });
