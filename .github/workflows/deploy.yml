@@ -46,16 +46,7 @@ jobs:
           docker push raghavi123/nodejs-backend-app
           echo "Docker image pushed successfully!"
 
-      # Step 8: Deploy to EC2
-      - name: Deploy to EC2
-        run: |
-          echo "Deploying to EC2..."
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-          docker pull raghavi123/nodejs-backend-app
-          docker stop nodejs-backend-app || true
-          docker rm nodejs-backend-app || true
-          docker run -d --name nodejs-backend-app -p 3000:3000 raghavi123/nodejs-backend-app
-          EOF
+     
 
       # Step 9: Create Kubernetes deployment
       - name: Create Kubernetes deployment
