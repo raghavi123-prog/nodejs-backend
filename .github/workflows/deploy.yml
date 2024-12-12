@@ -70,6 +70,13 @@ jobs:
           echo "Verifying Kubernetes deployment..."
           kubectl get deployments
 
+      # Step 8: Set up SSH for Node.js deployment
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+
          # Step 9: Deploy Node.js App to EC2 server
       - name: Deploy to EC2 server
         run: |
