@@ -75,3 +75,34 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Step 12: Invalidate CloudFront cache (optional)
+      - name: Invalidate CloudFront cache
+        run: |
+          echo "Invalidating CloudFront cache..."
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --invalidation-batch '{"CallerReference": "github-actions", "List": ["/*"]}'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Step 13: Create CloudWatch alarm for backend downtime
+      - name: Create CloudWatch alarm
+        run: |
+          echo "Creating CloudWatch alarm..."
+          aws cloudwatch put-metric-alarm --alarm-name BackendDowntimeAlarm --comparison-operator LessThanThreshold --evaluation-periods 1 --metric-name CPUUtilization --namespace AWS/EC2 --period 300 --statistic Average --threshold 0 --actions-enabled --alarm-actions arn:aws:sns:us-east-1:123456789012:BackendDowntimeTopic
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Step 14: Create SNS topic for backend downtime notifications
+      - name: Create SNS topic
+        run: |
+          echo "Creating SNS topic..."
+          aws sns create-topic --name BackendDowntimeTopic
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Step 15: Subscribe to SNS topic for backend downtime notifications
+      - name: Subscribe to SNS topic
+        run
