@@ -48,6 +48,16 @@ jobs:
 
      
 
+# Step 8: Set up Minikube
+      - name: Set up Minikube
+        run: |
+         echo "Setting up Minikube..."
+         minikube start
+         echo "Minikube started successfully!"
+
+
+     
+
       # Step 9: Create Kubernetes deployment
       - name: Create Kubernetes deployment
         run: |
