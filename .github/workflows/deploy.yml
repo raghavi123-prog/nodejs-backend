@@ -70,7 +70,7 @@ jobs:
           echo "Verifying Kubernetes deployment..."
           kubectl get deployments
 
-          Step 9: Deploy Node.js App to EC2 server
+         # Step 9: Deploy Node.js App to EC2 server
       - name: Deploy to EC2 server
         run: |
            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
