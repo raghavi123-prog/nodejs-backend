@@ -52,12 +52,12 @@ jobs:
       # Step 9: Deploy Node.js App to EC2 server
       - name: Deploy to EC2 server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-          docker pull raghavi123/nodejs-backend-app
-          docker stop nodejs-backend-app || true
-          docker rm nodejs-backend-app || true
-          docker run -d --name nodejs-backend-app -p 3000:3000 raghavi123/nodejs-backend-app
-          EOF
+           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/your_private_key ec2-user@your-ec2-public-ip-address << 'EOF'
+           docker pull raghavi123/nodejs-backend-app
+           docker stop nodejs-backend-app || true
+           docker rm nodejs-backend-app || true
+           docker run -d --name nodejs-backend-app -p 3000:3000 raghavi123/nodejs-backend-app
+           EOF
 
       # Step 10: Set up AWS CLI for Static HTML deployment
       - name: Set up AWS CLI
