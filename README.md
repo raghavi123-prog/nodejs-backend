@@ -57,4 +57,5 @@ url link:http://54.226.71.189:3000
 
 11. Deploy backend as docker container in  kubernetes
    create a kubernetes deployment and verifythe kubernetes deployment.
-  
+12.link -> http://54.226.71.189:4000
+
