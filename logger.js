@@ -8,7 +8,7 @@ const logger = winston.createLogger({
         new winston.transports.CloudWatch({
             logGroupName: 'NodeJS-Backend-Logs',
             logStreamName: `${process.env.NODE_ENV || 'development'}-Backend-App-Stream`,
-            awsRegion: process.env.AWS_REGION || 'your-region',
+            awsRegion: process.env.AWS_REGION || 'us-east-1',
             jsonMessage: true,
         }),
     ],
