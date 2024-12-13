@@ -1,5 +1,5 @@
 Infrastruce Setup(IAC)
-1. Compute instance for a node.js backend with a status and uptime.
+1. Compute instance for a node.js backend with a status and uptime
    Install terraform locally
    cmd: choco install terraform
    write code for Node.js application (It includes app.js,package.json,gitignore)
