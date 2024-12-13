@@ -23,7 +23,7 @@ Static website hosting
    Here the url https:hello.com redirects to -> hello.com
    main.tf file must be present where it provides details of provider nad region.
 CI/CD pipeline
-  1.Backend :Build and Deploy node.js application
+5.Backend :Build and Deploy node.js application
     Ensure the Node.js code in github repository with a Dockerfile for containerization
     Create a CI/CD pipeline using Github Actions
     How it works?
@@ -37,8 +37,12 @@ Note:Previously we created a Node.js application on a server which in turn retur
     3.Docker need to be created in Ec2 and login sucessfully
     4.change the security policy and acess port number 22 and 3000
     5.Start your instance and run the deployment.
-  2.Frontend deploy static html
+6.Frontend deploy static html
     modify the code in deployment where add deploy code code to it necessary aws s3 crediantials.
- Integrate monitoring with cloudwatch and configure an alert for backend downtime.
+    Integrate monitoring with cloudwatch and configure an alert for backend downtime.
 
- 2.  
+7.Create a cloud watch alarm metric for integrate monitoring.
+  and SNS topic for backend downtime.
+8.Deploy backend as docker container in  kubernetes
+  create a kubernetes deployment and verifythe kubernetes deployment.
+  
