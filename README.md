@@ -47,7 +47,7 @@ Note:Previously we created a Node.js application on a server which in turn retur
 8.  Frontend deploy static html
     modify the code in deployment where add deploy code code to it necessary aws s3 crediantials.
     Integrate monitoring with cloudwatch and configure an alert for backend downtime.
-url link:http://54.226.71.189:3000
+
 ![Screenshot (92)](https://github.com/user-attachments/assets/bf841f61-0dc9-4812-9dad-2e69fa85317c)
 
 
