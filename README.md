@@ -43,10 +43,13 @@ Note:Previously we created a Node.js application on a server which in turn retur
     Adding secrets in repository secrets
     Docker need to be created in Ec2 and login sucessfully
     change the security policy and acess port number 22 and 3000
-    Start your instance and run the deployment.
+    Start your instance and run the deployment.54.226.71.189
 8.  Frontend deploy static html
     modify the code in deployment where add deploy code code to it necessary aws s3 crediantials.
     Integrate monitoring with cloudwatch and configure an alert for backend downtime.
+url link:http://54.226.71.189:3000
+![Screenshot (92)](https://github.com/user-attachments/assets/bf841f61-0dc9-4812-9dad-2e69fa85317c)
+
 
 9. Create a cloud watch alarm metric for integrate monitoring.
   and SNS topic for backend downtime.
