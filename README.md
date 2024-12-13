@@ -32,11 +32,11 @@ CI/CD pipeline
     create a workflow file .github/workflows inside of it create a file deploy.yml
     set up the github secrets Docker username,Docker password,SSH.user,SSH.host.
 Note:Previously we created a Node.js application on a server which in turn returns returns a status code and time and for deployment
-    1.create a docker file
-    2.Adding secrets in repository secrets
-    3.Docker need to be created in Ec2 and login sucessfully
-    4.change the security policy and acess port number 22 and 3000
-    5.Start your instance and run the deployment.
+    create a docker file
+    Adding secrets in repository secrets
+    Docker need to be created in Ec2 and login sucessfully
+    change the security policy and acess port number 22 and 3000
+    Start your instance and run the deployment.
 6.Frontend deploy static html
     modify the code in deployment where add deploy code code to it necessary aws s3 crediantials.
     Integrate monitoring with cloudwatch and configure an alert for backend downtime.
