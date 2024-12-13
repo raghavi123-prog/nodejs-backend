@@ -50,6 +50,8 @@ Note:Previously we created a Node.js application on a server which in turn retur
 
 9. Create a cloud watch alarm metric for integrate monitoring.
   and SNS topic for backend downtime.
-10. Deploy backend as docker container in  kubernetes
+  ![Screenshot (90)](https://github.com/user-attachments/assets/a6bcbf72-8335-4598-9e63-2c6924d0b3f8)
+
+11. Deploy backend as docker container in  kubernetes
    create a kubernetes deployment and verifythe kubernetes deployment.
   
